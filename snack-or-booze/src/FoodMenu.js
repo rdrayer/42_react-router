@@ -9,8 +9,15 @@ import {
   ListGroup,
   ListGroupItem
 } from "reactstrap";
+import AddItemForm from "./AddItemForm";
+import SnackOrBoozeApi from "./Api";
 
-function FoodMenu({ snacks }) {
+function FoodMenu({ items, title }) {
+  const handleAddItem = async (newItem) => {
+    const category = newItem.category;
+    await SnackOrBoozeApi.addItem(newItem, category);
+    console.log(newItem)
+  }
   return (
     <section className="col-md-4">
       <Card>
@@ -23,12 +30,13 @@ function FoodMenu({ snacks }) {
             bulk of the card's content.
           </CardText>
           <ListGroup>
-            {snacks.map(snack => (
-              <Link to={`/snacks/${snack.id}`} key={snack.id}>
-                <ListGroupItem>{snack.name}</ListGroupItem>
+            {items.map(item => (
+              <Link to={`/${title}/${item.id}`} key={item.id}>
+                <ListGroupItem>{item.name}</ListGroupItem>
               </Link>
             ))}
           </ListGroup>
+          <AddItemForm onSubmit={handleAddItem} />
         </CardBody>
       </Card>
     </section>
